@@ -22,6 +22,9 @@ How To Use
 > decimal:to_binary(decimal:add(D1, D2)).
 <<"21.465">>
 
+> decimal:to_binary(decimal:sub(D1, D2)).
+<<"-1.025">>
+
 > decimal:to_binary(decimal:mul(D1, D2)).
 <<"114.92390">>
 
@@ -39,6 +42,13 @@ How To Use
 
 > decimal:to_binary(decimal:abs(decimal:from_binary(<<"-25.3">>))).
 <<"25.3">>
+
+> decimal:cmp(decimal:from_binary(<<"10">>), decimal:from_binary(<<"34">>)).
+-1
+> decimal:cmp(decimal:from_binary(<<"10">>), decimal:from_binary(<<"10">>)).
+0
+> decimal:cmp(decimal:from_binary(<<"11">>), decimal:from_binary(<<"10">>)).
+1
 
 > decimal:to_number(D1).
 10.22
