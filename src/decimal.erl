@@ -285,20 +285,23 @@ pow10(Pow) when is_integer(Pow), Pow >= 0 ->
 
 -spec ipow(N :: integer(), Pow :: non_neg_integer()) -> non_neg_integer().
 ipow(0, 0) -> error(badarith);
-ipow(0, _Pow) -> 0;
 ipow(_N, 0) -> 1;
+ipow(0, _Pow) -> 0;
+ipow(N, 1) -> N;
+ipow(N, 2) -> N * N;
+ipow(N, 3) -> N * N * N;
+ipow(_N, Pow) when Pow < 0 -> error(badarith);
 ipow(N, Pow) ->
     ipow(N, Pow, 1).
 
 
--spec ipow(N :: integer(), Pow :: non_neg_integer(), R :: integer()) -> non_neg_integer().
-ipow(N, Pow, R) when Pow < 2 ->
-    N * R;
-ipow(N, Pow, R) ->
-    NewR = if (Pow band 1) =:= 1 -> N * R;
-              true -> R
-           end,
-    ipow(N * N, Pow bsr 1, NewR).
+-spec ipow(N :: integer(), Pow :: non_neg_integer(), Acc :: integer()) -> integer().
+ipow(N, 1, Acc) -> N * Acc;
+ipow(N, Pow, Acc) ->
+    NewAcc = if (Pow band 1) =/= 0 -> N * Acc;
+                true -> Acc
+             end,
+    ipow(N * N, Pow bsr 1, NewAcc).
 
 
 -define(BIG_POW, (1 bsl 52)).
