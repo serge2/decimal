@@ -278,15 +278,14 @@ pow10(Pow) when is_integer(Pow), Pow >= 0 ->
     ipow(10, Pow).
 
 
--spec ipow(N :: integer(), Pow :: non_neg_integer()) -> non_neg_integer().
+-spec ipow(N :: integer(), Pow :: non_neg_integer()) -> integer().
 ipow(0, 0) -> error(badarith);
 ipow(_N, 0) -> 1;
 ipow(0, _Pow) -> 0;
 ipow(N, 1) -> N;
 ipow(N, 2) -> N * N;
 ipow(N, 3) -> N * N * N;
-ipow(_N, Pow) when Pow < 0 -> error(badarith);
-ipow(N, Pow) ->
+ipow(N, Pow) when is_integer(Pow), Pow > 0 ->
     ipow(N, Pow, 1).
 
 
