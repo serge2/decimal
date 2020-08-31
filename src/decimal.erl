@@ -201,9 +201,8 @@ from_number(Float) when is_float(Float) ->
     {Frac, Exp} = mantissa_exponent(Float),
     {Place, Digits} = from_float_(Float, Exp, Frac),
     Decimal = {B, E} = to_decimal(Place, [$0 + D || D <- Digits]),
-    case Float < 0.0 of
-        true -> {-B, E};
-        false -> Decimal
+    if Float < 0.0 -> {-B, E};
+       true -> Decimal
     end.
 
 
@@ -218,11 +217,7 @@ to_binary({0, _}, _Opts) ->
 to_binary({Int, 0}, _Opts) ->
     <<(integer_to_binary(Int))/binary, ".0">>;
 to_binary({Base, E}, #{pretty := Pretty}) ->
-    Sign =
-        case Base < 0 of
-            true -> <<$->>;
-            false -> <<>>
-        end,
+    Sign = if Base < 0 -> <<"-">>; true -> <<>> end,
     Bin = integer_to_binary(erlang:abs(Base)),
     Size = byte_size(Bin),
     case Size + E - 1 of
@@ -396,10 +391,8 @@ to_decimal(Place, S) ->
 
 int_ceil(X) when is_float(X) ->
     T = trunc(X),
-    case (X - T) of
-        Neg when Neg < 0 -> T;
-        Pos when Pos > 0 -> T + 1;
-        _ -> T
+    if X - T > 0 -> T + 1;
+       true -> T
     end.
 
 
