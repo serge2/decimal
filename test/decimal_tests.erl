@@ -209,7 +209,7 @@ divide_test_() ->
           A1 = decimal:from_binary(A),
           B1 = decimal:from_binary(B),
           R = try
-                  decimal:to_binary(decimal:normalize(decimal:round(half_up, decimal:divide(A1, B1, 100), 100)), #{pretty => true})
+                  decimal:to_binary(decimal:normalize(decimal:round(half_up, decimal:divide(A1, B1, 101), 100)), #{pretty => true})
               catch
                   Err:Res -> {Err,Res}
               end
